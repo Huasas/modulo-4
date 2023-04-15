@@ -1,0 +1,49 @@
+import redis
+
+
+r = redis.Redis(host='localhost', port=6379, db=0)
+
+
+def crear_palabra():
+    palabra = input("Ingresa la palabra: ")
+    definicion = input("Ingresa la definición: ")
+    r.set(palabra, definicion)
+    print("Palabra agregada con éxito.")
+
+def editar_palabra():
+    palabra = input("Ingresa la palabra que deseas editar: ")
+    if r.exists(palabra):
+        definicion = input("Ingresa la nueva definición: ")
+        r.set(palabra, definicion)
+        print("Palabra editada con éxito.")
+    else:
+        print("La palabra no existe.")
+
+
+def eliminar_palabra():
+    palabra = input("Ingresa la palabra que deseas eliminar: ")
+    if r.exists(palabra):
+        r.delete(palabra)
+        print("Palabra eliminada con éxito.")
+    else:
+        print("La palabra no existe.")
+
+while True:
+    print("\n***** Diccionario Panameno *****")
+    print("1. Crear una nueva palabra")
+    print("2. Editar una palabra existente")
+    print("3. Eliminar una palabra existente")
+    print("4. Salir")
+
+    opcion = input("\n¿Qué opción deseas elegir? ")
+
+    if opcion == "1":
+        crear_palabra()
+    elif opcion == "2":
+        editar_palabra()
+    elif opcion == "3":
+        eliminar_palabra()
+    elif opcion == "4":
+        break
+    else:
+        print("Opción inválida. Inténtalo de nuevo.")
